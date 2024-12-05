@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "KEXP to Spotify",
+  "version": "1.0",
+  "description": "Add songs currently playing on KEXP.org directly to your Spotify Liked Songs with a single click.",
+  "permissions": [
+    "identity",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://accounts.spotify.com/*",
+    "https://api.spotify.com/*",
+    "https://kexp.org/*",
+    "https://www.kexp.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": [
+      "https://kexp.org/*",
+      "https://www.kexp.org/*"
+    ],
+    "js": ["content.js"]
+  }],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
