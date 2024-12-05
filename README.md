@@ -110,7 +110,7 @@ async function handleAddToLiked(songInfo) {
 ```
 
 ### content.js
-// content.js
+```javascript
 function createNotification(message, type) {
   const notification = document.createElement('div');
   notification.style.cssText = `
@@ -246,13 +246,10 @@ function createLikeButton() {
   document.body.appendChild(button);
 }
 
-// Create button immediately
 createLikeButton();
 
-// Also create on window load
 window.addEventListener('load', createLikeButton);
 
-// Watch for changes and recreate if needed
 const observer = new MutationObserver(() => {
   if (!document.getElementById('spotify-like-button')) {
     createLikeButton();
@@ -260,9 +257,10 @@ const observer = new MutationObserver(() => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
+```
 
 ### icon.png
-Use any 128x128 icon image file.
+Use any 128x128 icon image file. (E.g., save a square version of the KEXP logo as icon.png in the folder)
 
 ## 🔧 Installation Instructions (For Users)
 
