@@ -15,45 +15,47 @@ function createNotification(message, type) {
     color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   `;
-  
+
   notification.textContent = message;
   document.body.appendChild(notification);
-  
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes successPop {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      75% { transform: scale(0.95); }
-      100% { transform: scale(1); }
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-  `;
-  document.head.appendChild(style);
-  
+
+  const styleId = 'notification-styles';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+      @keyframes successPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        75% { transform: scale(0.95); }
+        100% { transform: scale(1); }
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   setTimeout(() => {
     notification.style.animation = 'slideOut 0.3s ease-in';
     notification.addEventListener('animationend', () => {
       document.body.removeChild(notification);
     });
-    style.textContent += `
-      @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-    `;
   }, 3000);
 }
 
