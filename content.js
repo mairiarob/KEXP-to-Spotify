@@ -57,6 +57,29 @@ function createNotification(message, type) {
   }, 3000);
 }
 
+// Selectors for song information. If KEXP updates their markup these can be
+// adjusted to restore functionality.
+const SELECTORS = {
+  artist: [
+    '[data-player-meta="artist_name"]',
+    '.player-details-artist',
+    '.play-artist'
+  ],
+  title: [
+    '[data-player-meta="song_title"]',
+    '.player-details-song',
+    '.play-title'
+  ]
+};
+
+function findWithFallback(list) {
+  for (const selector of list) {
+    const el = document.querySelector(selector);
+    if (el) return el;
+  }
+  return null;
+}
+
 function createLikeButton() {
   if (document.getElementById('spotify-like-button')) return;
   
@@ -92,9 +115,9 @@ function createLikeButton() {
   });
   
   button.addEventListener('click', async () => {
-    const artistElement = document.querySelector('[data-player-meta="artist_name"]');
-    const songElement = document.querySelector('[data-player-meta="song_title"]');
-    
+    const artistElement = findWithFallback(SELECTORS.artist);
+    const songElement = findWithFallback(SELECTORS.title);
+
     if (artistElement && songElement) {
       button.disabled = true;
       button.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite">↻</span> Adding...';
@@ -128,6 +151,12 @@ function createLikeButton() {
           button.innerHTML = '♥ Add to Spotify';
         }, 2000);
       });
+    } else {
+      button.style.animation = 'shake 0.5s ease-in-out';
+      createNotification('Could not detect song information on this page.', 'error');
+      setTimeout(() => {
+        button.style.animation = '';
+      }, 2000);
     }
   });
   
